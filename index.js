@@ -25,13 +25,10 @@ element es cada objeto dentro del array (una pregunta con su título, respuestas
     titulo: element.question,
     respuestas: respuestas,
     correcta: element.correct_answer
-  };
-  
-      
+  }; 
     });
   }
   
-
   //visualización preguntas en el DOM
   
   function pintarPregunta(pregunta, numeroPregunta) {//SET INTERVAL DE 10 SEGUNDOS
@@ -64,7 +61,6 @@ element es cada objeto dentro del array (una pregunta con su título, respuestas
             timer: 1500,
             showConfirmButton: false
         });
-          //setTimeout(()=> alert("¡Correcto!"), 300);
         } else {
           button.classList.replace("btn-outline-primary","btn-danger");
           Swal.fire({
@@ -73,7 +69,6 @@ element es cada objeto dentro del array (una pregunta con su título, respuestas
             icon: "error",
             confirmButtonText: "Entendido"
         });
-          //setTimeout(()=> alert("Incorrecto, la respuesta era: " + pregunta.correcta), 300);
         }
         //Actualizamos la puntuacion en la interfaz
         puntuacion.textContent = `Puntuación: ${aciertos}`;
@@ -117,38 +112,6 @@ element es cada objeto dentro del array (una pregunta con su título, respuestas
     const intervalo = setInterval(mostrarSiguientePregunta, 10000); // Cada 10 segundos
   }
   
-  iniciarJuego();
-
-
-  //consultaPreguntas();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  iniciarJuego()
   
   consultaPreguntas();
