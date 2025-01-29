@@ -75,6 +75,8 @@ element es cada objeto dentro del array (una pregunta con su título, respuestas
         });
           //setTimeout(()=> alert("Incorrecto, la respuesta era: " + pregunta.correcta), 300);
         }
+        //Actualizamos la puntuacion en la interfaz
+        puntuacion.textContent = `Puntuación: ${aciertos}`;
       });
       li.appendChild(button);
       ulRespuestas.appendChild(li);
@@ -85,6 +87,11 @@ element es cada objeto dentro del array (una pregunta con su título, respuestas
   async function iniciarJuego() {
     await consultaPreguntas();
     let indice = 0;
+
+    //Restablecer la puntuacion cuando reinicia el juego
+    const puntuacion = document.getElementById("puntuacion");
+    aciertos = 0; //Restablecer la puntuacion
+    puntuacion.textContent = `Puntuación: ${aciertos}`; //Mostrar puntuacion 0 al inicio
   
     function mostrarSiguientePregunta() {
       if (indice < preguntas.length) {
