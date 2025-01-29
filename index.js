@@ -1,5 +1,6 @@
 let url="https://opentdb.com/api.php?amount=10&category=9&difficulty=medium&type=multiple";
 let preguntas=[];
+let aciertos = 0;
 
 //con esta funcion consulto las preguntas en API
 async function consultaPreguntas() {
@@ -33,24 +34,46 @@ element es cada objeto dentro del array (una pregunta con su título, respuestas
 
   //visualización preguntas en el DOM
   
-  function pintarPregunta(pregunta) {//SET INTERVAL DE 10 SEGUNDOS
+  function pintarPregunta(pregunta, numeroPregunta) {//SET INTERVAL DE 10 SEGUNDOS
     const divPregunta = document.getElementById("pregunta");
     const ulRespuestas = document.getElementById("respuesta");
+    const tituloPregunta = document.querySelector(".card-title");
+    //Mostramos el titulo con el numero de la pregunta actual
+    tituloPregunta.textContent = `Pregunta ${numeroPregunta}`;
   
     // Mostrar la pregunta
-    divPregunta.textContent = pregunta.titulo;
+    divPregunta.innerHTML = pregunta.titulo;
   
     // Mostrar las respuestas
     ulRespuestas.innerHTML = ""; // Limpiar respuestas previas
     pregunta.respuestas.forEach((respuesta) => {
       const li = document.createElement("li");
+      li.classList.add("d-flex","justify-content-start","mb-2");
       const button = document.createElement("button");
       button.textContent = respuesta;
+      button.classList.add("btn","btn-outline-dark","w-20","p-2","text-start");
       button.addEventListener("click", () => {
         if (respuesta === pregunta.correcta) {
-          alert("¡Correcto!");
+          aciertos ++;
+          button.classList.replace("btn-outline-primary","btn-success");
+          //ALERTA CON SWEETALERT
+          Swal.fire({
+            title: "¡Enhorabuena!",
+            text: "Has elegido la respuesta correcta.",
+            icon: "success",
+            timer: 1500,
+            showConfirmButton: false
+        });
+          //setTimeout(()=> alert("¡Correcto!"), 300);
         } else {
-          alert("Incorrecto, la respuesta era: " + pregunta.correcta);
+          button.classList.replace("btn-outline-primary","btn-danger");
+          Swal.fire({
+            title: "¡Incorrecto!",
+            text: `La respuesta correcta era: ${pregunta.correcta}`,
+            icon: "error",
+            confirmButtonText: "Entendido"
+        });
+          //setTimeout(()=> alert("Incorrecto, la respuesta era: " + pregunta.correcta), 300);
         }
       });
       li.appendChild(button);
@@ -65,19 +88,32 @@ element es cada objeto dentro del array (una pregunta con su título, respuestas
   
     function mostrarSiguientePregunta() {
       if (indice < preguntas.length) {
-        pintarPregunta(preguntas[indice]);
+        pintarPregunta(preguntas[indice], indice +1);//Pasamos el numero de la pregunta
         indice++;
       } else {
-        alert("¡Juego terminado!");
         clearInterval(intervalo);
+        Swal.fire({
+          title: "¡Juego terminado!",
+          text: `Has acertado ${aciertos} de ${preguntas.length} preguntas.`,
+          icon: "success",
+          confirmButtonText: "Jugar otra vez",
+      }).then(() => {
+          indice = 0;
+          aciertos = 0;
+          iniciarJuego();
+      });
+        }
       }
-    }
+    
   
     mostrarSiguientePregunta();
     const intervalo = setInterval(mostrarSiguientePregunta, 10000); // Cada 10 segundos
   }
   
   iniciarJuego();
+
+
+  //consultaPreguntas();
 
 
 
